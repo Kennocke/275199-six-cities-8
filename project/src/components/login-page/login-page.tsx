@@ -42,4 +42,4 @@ function LoginPage(): JSX.Element {
   );
 }
 
-export default LoginPage();
+export default LoginPage;
