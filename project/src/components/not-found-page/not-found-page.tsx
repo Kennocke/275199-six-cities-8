@@ -1,4 +1,4 @@
-function notFoundPage(): JSX.Element {
+function NotFoundPage(): JSX.Element {
   return (
     <div style={{
       position: 'absolute',
@@ -18,4 +18,4 @@ function notFoundPage(): JSX.Element {
 
 }
 
-export default notFoundPage;
+export default NotFoundPage;
