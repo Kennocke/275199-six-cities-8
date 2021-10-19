@@ -1,10 +1,13 @@
-import Card from '../card/card';
+import ListOfOffers from '../list-of-offers/list-of-offers';
+import {Offers} from '../../types/offers';
 
 type MainPageProps = {
   offersCount: number;
+  offers: Offers;
 };
 
 function MainPage(props: MainPageProps): JSX.Element {
+  const {offersCount, offers} = props;
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -77,7 +80,7 @@ function MainPage(props: MainPageProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{props.offersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -93,13 +96,7 @@ function MainPage(props: MainPageProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-              </div>
+              <ListOfOffers offers = {offers}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
