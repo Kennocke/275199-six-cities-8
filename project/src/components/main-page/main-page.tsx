@@ -1,5 +1,6 @@
 import ListOfOffers from '../list-of-offers/list-of-offers';
 import {Offers} from '../../types/offers';
+import Map from '../map/map';
 
 type MainPageProps = {
   offersCount: number;
@@ -8,6 +9,8 @@ type MainPageProps = {
 
 function MainPage(props: MainPageProps): JSX.Element {
   const {offersCount, offers} = props;
+  const locations = offers.map((offer) => offer.location);
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -99,7 +102,9 @@ function MainPage(props: MainPageProps): JSX.Element {
               <ListOfOffers offers = {offers}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map points={locations} city={offers[0].city} />
+              </section>
             </div>
           </div>
         </div>
