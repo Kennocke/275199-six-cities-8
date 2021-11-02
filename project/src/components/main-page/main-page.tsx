@@ -102,7 +102,12 @@ function MainPage(props: MainPageProps): JSX.Element {
               <ListOfOffers offers = {offers}/>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map">
+              <section
+                className="cities__map map"
+                style={{
+                  position: 'relative',
+                }}
+              >
                 <Map points={locations} city={offers[0].city} />
               </section>
             </div>
