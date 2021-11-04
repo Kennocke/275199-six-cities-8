@@ -1,5 +1,3 @@
-//import { Offers } from '../types/offers';
-
 export const offers = [
   {
     'bedrooms': 3,
@@ -32,7 +30,7 @@ export const offers = [
     'previewImage': 'img/apartment-01.jpg',
     'price': 120,
     'rating': 4.8,
-    'title': 'Beautiful & luxurious studio at great location',
+    'title': 'Luxurious penthouse',
     'type': 'Apartment',
   },
   {
@@ -66,7 +64,7 @@ export const offers = [
     'previewImage': 'img/apartment-02.jpg',
     'price': 120,
     'rating': 4.8,
-    'title': 'Beautiful & luxurious studio at great location',
+    'title': 'Beautiful studio',
     'type': 'Apartment',
   },
   {
@@ -100,7 +98,7 @@ export const offers = [
     'previewImage': 'img/apartment-03.jpg',
     'price': 120,
     'rating': 4.8,
-    'title': 'Beautiful & luxurious studio at great location',
+    'title': 'Great flat',
     'type': 'Apartment',
   },
   {
@@ -117,11 +115,11 @@ export const offers = [
     'goods': ['Heating', 'Kitchen', 'Cable TV', 'Washing machine', 'Coffee machine', 'Dishwasher'],
     'host': {
       'avatarUrl': 'img/1.png',
-      'id': 3,
+      'id': 4,
       'isPro': true,
       'name': 'Angelina',
     },
-    'id': 3,
+    'id': 4,
     'images': ['img/apartment-03.jpg', 'img/apartment-03.jpg'],
     'isFavorite': false,
     'isPremium': false,
@@ -134,7 +132,7 @@ export const offers = [
     'previewImage': 'img/apartment-03.jpg',
     'price': 120,
     'rating': 4.8,
-    'title': 'Beautiful & luxurious studio at great location',
+    'title': 'Big flat',
     'type': 'Apartment',
   },
 ];
