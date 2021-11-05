@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import leaflet from 'leaflet';
 import {City} from '../../types/offers';
+import { URL_COPYRIGHT_MAP, URL_TYPE_MAP } from '../../const';
 
 function useMap(mapRef: React.MutableRefObject<null>, city: City): (leaflet.Map | null) {
   const [map, setMap] = useState<leaflet.Map | null>(null);
@@ -16,9 +17,9 @@ function useMap(mapRef: React.MutableRefObject<null>, city: City): (leaflet.Map 
       });
 
       leaflet.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        URL_TYPE_MAP,
         {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          attribution: URL_COPYRIGHT_MAP,
         },
       ).addTo(instance);
 
