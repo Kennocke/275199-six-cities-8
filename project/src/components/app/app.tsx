@@ -10,7 +10,6 @@ import {Offers} from '../../types/offers';
 import { offers } from '../../mocks/offers';
 
 type AppProps = {
-  offersCount: number;
   offers: Offers;
 }
 
@@ -19,10 +18,7 @@ function App(props: AppProps): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path='/'>
-          <MainPage
-            offersCount = {props.offersCount}
-            offers = {props.offers}
-          />
+          <MainPage/>
         </Route>
         <Route exact path='/login'>
           <LoginPage/>
