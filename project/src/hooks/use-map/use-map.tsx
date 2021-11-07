@@ -3,12 +3,18 @@ import leaflet from 'leaflet';
 import {City} from '../../types/offers';
 import { URL_COPYRIGHT_MAP, URL_TYPE_MAP } from '../../const';
 
-function useMap(mapRef: React.MutableRefObject<null>, city: City): (leaflet.Map | null) {
-  const [map, setMap] = useState<leaflet.Map | null>(null);
+type MapState = {
+  map: leaflet.Map;
+  markers: leaflet.LayerGroup;
+}
+
+function useMap(mapRef: React.MutableRefObject<null>, city: City | null): (MapState | null) {
+
+  const [map, setMapObject] = useState<MapState | null>(null);
 
   useEffect(() => {
-    if (mapRef.current !== null && map === null) {
-      const instance = leaflet.map(mapRef.current,{
+    if (mapRef.current !== null && map === null && city !== null) {
+      const instance = leaflet.map(mapRef.current, {
         center: {
           lat: city.location.latitude,
           lng: city.location.longitude,
@@ -23,7 +29,9 @@ function useMap(mapRef: React.MutableRefObject<null>, city: City): (leaflet.Map 
         },
       ).addTo(instance);
 
-      setMap(instance);
+      const markers = new leaflet.LayerGroup().addTo(instance);
+
+      setMapObject({map: instance, markers: markers});
     }
   }, [mapRef, map, city]);
 

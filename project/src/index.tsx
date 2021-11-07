@@ -2,17 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
 import { offers } from './mocks/offers';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { reducer } from './store/reducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-const Setting = {
-  OFFERS_COUNT: 311,
-};
+const store = createStore(
+  reducer,
+  composeWithDevTools(),
+);
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App
-      offersCount = {Setting.OFFERS_COUNT}
-      offers = {offers}
-    />
+    <Provider store = {store} >
+      <App offers = {offers} />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'));
