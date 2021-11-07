@@ -12,7 +12,6 @@ function OfferPage({offers}: OfferPageProps): JSX.Element {
   const {id} = useParams<{id:string}>();
   const offer = offers.find((elem) => elem.id === Number(id));
   const otherOffers = offers.filter((off) => off.id.toString() !== id);
-  const locations = otherOffers.map((off) => off.location);
 
   if (offer === undefined) {
     throw new Error('Error with index array');
@@ -165,10 +164,7 @@ function OfferPage({offers}: OfferPageProps): JSX.Element {
               marginRight: 'auto',
             }}
           >
-            <Map
-              points={locations}
-              city={offers[0].city}
-            />
+            <Map offers={otherOffers}/>
           </section>
         </section>
         <div className="container">

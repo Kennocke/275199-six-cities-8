@@ -1,15 +1,29 @@
 import ListOfOffers from '../list-of-offers/list-of-offers';
-import {Offers} from '../../types/offers';
 import Map from '../map/map';
+import ListOfCities from '../list-of-cities/list-of-cities';
+import {connect, ConnectedProps} from 'react-redux';
+import {AnyAction, bindActionCreators, Dispatch} from 'redux';
+import { Actions } from '../../types/action';
+import { setActiveCity, fillOffers } from '../../store/action';
+import {State} from '../../types/state';
 
-type MainPageProps = {
-  offersCount: number;
-  offers: Offers;
-};
+const mapStateToProps = ({activeCity, offersForActiveCity}: State) => ({
+  activeCity,
+  offersForActiveCity,
+});
 
-function MainPage(props: MainPageProps): JSX.Element {
-  const {offersCount, offers} = props;
-  const locations = offers.map((offer) => offer.location);
+const mapDispatchToProps = (dispatch: Dispatch<Actions | AnyAction>) => bindActionCreators({
+  onSetActiveCity: setActiveCity,
+  onFillOffers: fillOffers,
+}, dispatch);
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux ;
+
+function MainPage(props: ConnectedComponentProps): JSX.Element {
+  const {offersForActiveCity, activeCity, onSetActiveCity, onFillOffers} = props;
 
   return (
     <div className="page page--gray page--main">
@@ -40,50 +54,20 @@ function MainPage(props: MainPageProps): JSX.Element {
           </div>
         </div>
       </header>
-
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="/#">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
+          <ListOfCities
+            activeCity={activeCity}
+            onSetActiveCity={onSetActiveCity}
+            onFillOffers={onFillOffers}
+          />
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offersForActiveCity.length} places to stay in {activeCity}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -99,7 +83,7 @@ function MainPage(props: MainPageProps): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <ListOfOffers offers = {offers}/>
+              <ListOfOffers offers = {offersForActiveCity}/>
             </section>
             <div className="cities__right-section">
               <section
@@ -108,7 +92,7 @@ function MainPage(props: MainPageProps): JSX.Element {
                   position: 'relative',
                 }}
               >
-                <Map points={locations} city={offers[0].city} />
+                <Map offers={offersForActiveCity} />
               </section>
             </div>
           </div>
@@ -119,4 +103,6 @@ function MainPage(props: MainPageProps): JSX.Element {
 
 }
 
-export default MainPage;
+export {MainPage};
+export default connector(MainPage);
+
