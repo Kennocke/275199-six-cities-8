@@ -1,12 +1,14 @@
-import {Cities} from '../const';
+import {Cities, SortingOptions} from '../const';
 
 export enum ActionType {
-  ChangeCity = 'mainPage/changeCity',
-  FillOffers = 'mainPage/filterOffers',
+  SetActiveCity = 'mainPage/changeCity',
+  FillOffers = 'mainPage/fillOffers',
+  FilterOffers = 'mainPage/filterOffers',
+  SetSortOption = 'mainPage/setSortOption',
 }
 
 export type SetActiveCity = {
-  type: ActionType.ChangeCity;
+  type: ActionType.SetActiveCity;
   payload: Cities;
 }
 
@@ -15,4 +17,14 @@ export type FillOffers = {
   payload: Cities;
 }
 
-export type Actions = SetActiveCity | FillOffers;
+export type FilterOffers = {
+  type: ActionType.FilterOffers;
+  payload: SortingOptions;
+}
+
+export type SetSortOption = {
+  type: ActionType.SetSortOption;
+  payload: SortingOptions
+}
+
+export type Actions = SetActiveCity | FillOffers | FilterOffers | SetSortOption;

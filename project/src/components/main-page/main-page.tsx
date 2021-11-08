@@ -4,17 +4,23 @@ import ListOfCities from '../list-of-cities/list-of-cities';
 import {connect, ConnectedProps} from 'react-redux';
 import {AnyAction, bindActionCreators, Dispatch} from 'redux';
 import { Actions } from '../../types/action';
-import { setActiveCity, fillOffers } from '../../store/action';
+import { setActiveCity, fillOffers, filterOffers, setSortOption} from '../../store/action';
 import {State} from '../../types/state';
+import SortOptions from '../sort-options/sort-options';
+import {useState} from 'react';
+import {Offer} from '../../types/offers';
 
-const mapStateToProps = ({activeCity, offersForActiveCity}: State) => ({
+const mapStateToProps = ({activeCity, offersForActiveCity, sortOption}: State) => ({
   activeCity,
   offersForActiveCity,
+  sortOption,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions | AnyAction>) => bindActionCreators({
-  onSetActiveCity: setActiveCity,
-  onFillOffers: fillOffers,
+  setActiveCity: setActiveCity,
+  fillOffers: fillOffers,
+  filterOffers: filterOffers,
+  setSortOption: setSortOption,
 }, dispatch);
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -23,7 +29,11 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux ;
 
 function MainPage(props: ConnectedComponentProps): JSX.Element {
-  const {offersForActiveCity, activeCity, onSetActiveCity, onFillOffers} = props;
+  const [selectedOffer, setSelectedCity] = useState<Offer | undefined>(undefined);
+
+  const onListItemHover = (cityId: string | undefined) => {
+    setSelectedCity(props.offersForActiveCity.find((offer) => offer.id.toString() === cityId));
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -58,32 +68,25 @@ function MainPage(props: ConnectedComponentProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <ListOfCities
-            activeCity={activeCity}
-            onSetActiveCity={onSetActiveCity}
-            onFillOffers={onFillOffers}
+            activeCity={props.activeCity}
+            setActiveCity={props.setActiveCity}
+            fillOffers={props.fillOffers}
           />
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offersForActiveCity.length} places to stay in {activeCity}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex ={0} >Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
-              <ListOfOffers offers = {offersForActiveCity}/>
+              <b className="places__found">{props.offersForActiveCity.length} places to stay in {props.activeCity}</b>
+              <SortOptions
+                activeOption={props.sortOption}
+                setSortOption={props.setSortOption}
+                filterOffers={props.filterOffers}
+              />
+              <ListOfOffers
+                offers={props.offersForActiveCity}
+                onListItemHover={onListItemHover}
+              />
             </section>
             <div className="cities__right-section">
               <section
@@ -92,7 +95,10 @@ function MainPage(props: ConnectedComponentProps): JSX.Element {
                   position: 'relative',
                 }}
               >
-                <Map offers={offersForActiveCity} />
+                <Map
+                  offers={props.offersForActiveCity}
+                  currentOffer={selectedOffer}
+                />
               </section>
             </div>
           </div>
