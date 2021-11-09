@@ -4,12 +4,22 @@ import Card from '../card/card';
 
 type ListOfOffersProps = {
   offers: Offers;
+  onListItemHover?: (city: string | undefined) => void;
 };
 
-function ListOfOffers({offers}: ListOfOffersProps): JSX.Element {
+function ListOfOffers({offers, onListItemHover}: ListOfOffersProps): JSX.Element {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <Card key={offer.id} offer={offer} />)}
+      {offers.map((offer) => {
+        const elemKey = offer.id;
+        return (
+          <Card
+            key={elemKey}
+            offer={offer}
+            onListItemHover={onListItemHover}
+          />
+        );
+      })}
     </div>
   );
 }
