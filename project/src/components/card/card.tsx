@@ -4,15 +4,26 @@ import {Offer} from '../../types/offers';
 
 type CardProps = {
   offer: Offer;
+  onListItemHover?: (cityId: string | undefined) => void;
 };
 
-function Card({offer}: CardProps): JSX.Element {
+function Card({offer, onListItemHover}: CardProps): JSX.Element {
   const [,setNextOffer] = useState(0);
 
+  const listItemHoverHandler = (cityId: string | undefined) => {
+    if (onListItemHover) {
+      onListItemHover(cityId);
+    }
+  };
+
   return (
-    <article className="cities__place-card place-card" onMouseEnter={(e) => {
-      setNextOffer(offer.id);
-    }}
+    <article
+      className="cities__place-card place-card"
+      onMouseEnter={() => {
+        setNextOffer(offer.id);
+        listItemHoverHandler(offer.id.toString());
+      }}
+      onMouseLeave={() => listItemHoverHandler(undefined)}
     >
       {offer.isPremium && (
         <div className="place-card__mark">

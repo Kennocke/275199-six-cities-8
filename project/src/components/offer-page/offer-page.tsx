@@ -1,8 +1,9 @@
 import { useParams } from 'react-router';
-import {Offers} from '../../types/offers';
+import {Offers, Offer} from '../../types/offers';
 import ReviewsList from '../reviews-list/reviews-list';
 import Map from '../map/map';
 import ListOfOffers from '../list-of-offers/list-of-offers';
+import {useState} from 'react';
 
 type OfferPageProps = {
   offers: Offers;
@@ -11,11 +12,18 @@ type OfferPageProps = {
 function OfferPage({offers}: OfferPageProps): JSX.Element {
   const {id} = useParams<{id:string}>();
   const offer = offers.find((elem) => elem.id === Number(id));
-  const otherOffers = offers.filter((off) => off.id.toString() !== id);
+  const otherOffers = offers.filter((offerForHover) => offerForHover.id.toString() !== id);
 
   if (offer === undefined) {
     throw new Error('Error with index array');
   }
+
+  const [selectedOffer, setSelectedCity] = useState<Offer | undefined>(undefined);
+
+  const onListItemHover = (cityId: string | undefined) => {
+    setSelectedCity(offers.find((offerForHover) => offerForHover.id.toString() === cityId));
+  };
+
   return (
     <div className="page">
       <header className="header">
@@ -164,14 +172,20 @@ function OfferPage({offers}: OfferPageProps): JSX.Element {
               marginRight: 'auto',
             }}
           >
-            <Map offers={otherOffers}/>
+            <Map
+              offers={otherOffers}
+              currentOffer={selectedOffer}
+            />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              <ListOfOffers offers = {otherOffers}/>
+              <ListOfOffers
+                offers = {otherOffers}
+                onListItemHover = {onListItemHover}
+              />
             </div>
           </section>
         </div>

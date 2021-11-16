@@ -2,11 +2,11 @@ import {Cities} from '../../const';
 
 type ListOfCitiesProps = {
   activeCity: Cities;
-  onSetActiveCity: (activeCity: Cities) => void;
-  onFillOffers: (activeCity: Cities) => void;
+  setActiveCity: (activeCity: Cities) => void;
+  fillOffers: (activeCity: Cities) => void;
 }
 
-function ListOfCities({activeCity, onSetActiveCity, onFillOffers}: ListOfCitiesProps): JSX.Element {
+function ListOfCities({activeCity, setActiveCity, fillOffers}: ListOfCitiesProps): JSX.Element {
   const orderedCities = [
     Cities.Paris,
     Cities.Colgone,
@@ -27,8 +27,8 @@ function ListOfCities({activeCity, onSetActiveCity, onFillOffers}: ListOfCitiesP
                 className={`locations__item-link tabs__item${(activeCity === city) ? ' tabs__item--active' : ''}`}
                 href="/#"
                 onClick={() => {
-                  onSetActiveCity(city);
-                  onFillOffers(city);
+                  setActiveCity(city);
+                  fillOffers(city);
                 }}
               >
                 <span>{city}</span>
