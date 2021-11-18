@@ -3,13 +3,13 @@ import {Cities} from '../../const';
 type ListOfCitiesProps = {
   activeCity: Cities;
   setActiveCity: (activeCity: Cities) => void;
-  fillOffers: (activeCity: Cities) => void;
+  fetchOfferAction: (activeCity: Cities) => void;
 }
 
-function ListOfCities({activeCity, setActiveCity, fillOffers}: ListOfCitiesProps): JSX.Element {
+function ListOfCities({activeCity, setActiveCity, fetchOfferAction}: ListOfCitiesProps): JSX.Element {
   const orderedCities = [
     Cities.Paris,
-    Cities.Colgone,
+    Cities.Cologne,
     Cities.Brussels,
     Cities.Amsterdam,
     Cities.Hamburg,
@@ -28,7 +28,7 @@ function ListOfCities({activeCity, setActiveCity, fillOffers}: ListOfCitiesProps
                 href="/#"
                 onClick={() => {
                   setActiveCity(city);
-                  fillOffers(city);
+                  fetchOfferAction(city);
                 }}
               >
                 <span>{city}</span>
