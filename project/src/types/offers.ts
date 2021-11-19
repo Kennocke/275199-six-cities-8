@@ -33,6 +33,7 @@ export type Offer = {
   rating: number;
   title: string;
   type: string;
+  'preview_image'?: string;
 };
 
 export type Offers = Offer[];

@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import leaflet from 'leaflet';
+import leaflet, {Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/use-map/use-map';
 import { Offers, Offer } from '../../types/offers';
@@ -28,23 +28,35 @@ function Map({offers, currentOffer}: MapProps): JSX.Element {
   });
 
   useEffect(() => {
+    const markers: Marker[] = [];
+
     if (map) {
-      map.markers.clearLayers();
       offers.forEach((offer) => {
-        leaflet.marker(
-          {
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          },
-          {
-            icon: (currentOffer !== undefined && offer.id === currentOffer?.id)
+        const {location} = offer;
+        const marker = new Marker({
+          lat: location.latitude,
+          lng: location.longitude,
+        });
+
+        markers.push(marker);
+
+        marker
+          .setIcon(
+            offer.id === currentOffer?.id
               ? currentCustomIcon
               : defaultCustomIcon,
-          },
-        ).addTo(map.markers);
+          )
+          .addTo(map);
       });
     }
+    return () => markers.forEach((marker) => marker.remove());
   }, [map, offers, currentOffer, defaultCustomIcon, currentCustomIcon]);
+
+  useEffect(() => {
+    if (activeCity !== null) {
+      map?.setView([activeCity.location.latitude, activeCity.location.longitude]);
+    }
+  });
 
   return (
     <div

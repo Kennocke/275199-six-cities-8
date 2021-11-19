@@ -1,11 +1,19 @@
 import Card from '../card/card';
-import {Offers} from '../../types/offers';
+import {connect, ConnectedProps} from 'react-redux';
+import { State } from '../../types/state';
 
-type FavoritesPageProps = {
-  offers: Offers;
-}
+const mapStateToProps = ({favoriteOffers}: State) => ({
+  favoriteOffers,
+});
 
-function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+
+function FavoritesPage({favoriteOffers}: PropsFromRedux): JSX.Element {
+  // eslint-disable-next-line no-console
+  console.log('Test', favoriteOffers);
   return (
     <div className="page">
       <header className="header">
@@ -51,7 +59,7 @@ function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
                 </div>
                 <div className="favorites__places">
                   <article className="favorites__card place-card">
-                    {offers.map((offer) => (offer.city.name === 'Amsterdam') ? <Card key={offer.id} offer={offer} /> : null)}
+                    {favoriteOffers.map((offer) => (offer.city.name === 'Amsterdam') ? <Card key={offer.id} offer={offer} /> : null)}
                   </article>
                 </div>
               </li>
@@ -66,7 +74,7 @@ function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
                 </div>
                 <div className="favorites__places">
                   <article className="favorites__card place-card">
-                    {offers.map((offer) => (offer.city.name === 'Cologne') ? <Card key={offer.id} offer={offer} /> : null)}
+                    {favoriteOffers.map((offer) => (offer.city.name === 'Cologne') ? <Card key={offer.id} offer={offer} /> : null)}
                   </article>
                 </div>
               </li>
@@ -83,4 +91,5 @@ function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
   );
 }
 
-export default FavoritesPage;
+export { FavoritesPage };
+export default connector(FavoritesPage);
