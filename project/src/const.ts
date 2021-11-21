@@ -6,7 +6,7 @@ export enum AuthorizationStatus {
 
 export enum Cities {
   Paris = 'Paris',
-  Colgone = 'Colgone',
+  Cologne = 'Cologne',
   Brussels = 'Brussels',
   Amsterdam = 'Amsterdam',
   Hamburg = 'Hamburg',
@@ -18,6 +18,13 @@ export enum SortingOptions {
   LowToHigh = 'Price: low to high',
   HighToLow = 'Price: high to low',
   TopRatedFirst = 'Top rated first',
+}
+
+export enum APIRoute {
+  Hotels = '/hotels',
+  Login = '/login',
+  Logout = '/logout',
+  Favorite = '/favorite'
 }
 
 export const URL_MARKER_DEFAULT = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';

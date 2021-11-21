@@ -4,15 +4,17 @@ import ListOfCities from '../list-of-cities/list-of-cities';
 import {connect, ConnectedProps} from 'react-redux';
 import {AnyAction, bindActionCreators, Dispatch} from 'redux';
 import { Actions } from '../../types/action';
-import { setActiveCity, fillOffers, filterOffers, setSortOption} from '../../store/action';
+import { setActiveCity, fillOffers, filterOffers, setSortOption } from '../../store/action';
+import { fetchOfferAction } from '../../store/api-actions';
 import {State} from '../../types/state';
 import SortOptions from '../sort-options/sort-options';
 import {useState} from 'react';
 import {Offer} from '../../types/offers';
+import Header from '../header/header';
 
-const mapStateToProps = ({activeCity, offersForActiveCity, sortOption}: State) => ({
+const mapStateToProps = ({activeCity, offers, sortOption}: State) => ({
   activeCity,
-  offersForActiveCity,
+  offers,
   sortOption,
 });
 
@@ -21,70 +23,44 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions | AnyAction>) => bindActi
   fillOffers: fillOffers,
   filterOffers: filterOffers,
   setSortOption: setSortOption,
+  fetchOfferAction: fetchOfferAction,
 }, dispatch);
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux ;
 
-function MainPage(props: ConnectedComponentProps): JSX.Element {
+function MainPage(props: PropsFromRedux): JSX.Element {
   const [selectedOffer, setSelectedCity] = useState<Offer | undefined>(undefined);
 
   const onListItemHover = (cityId: string | undefined) => {
-    setSelectedCity(props.offersForActiveCity.find((offer) => offer.id.toString() === cityId));
+    setSelectedCity(props.offers.find((offer) => offer.id.toString() === cityId));
   };
 
   return (
     <div className="page page--gray page--main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a href="/#" className="header__logo-link header__logo-link--active">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="/#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="/#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <ListOfCities
             activeCity={props.activeCity}
             setActiveCity={props.setActiveCity}
-            fillOffers={props.fillOffers}
+            fetchOfferAction={props.fetchOfferAction}
           />
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{props.offersForActiveCity.length} places to stay in {props.activeCity}</b>
+              <b className="places__found">{props.offers.length} places to stay in {props.activeCity}</b>
               <SortOptions
                 activeOption={props.sortOption}
                 setSortOption={props.setSortOption}
                 filterOffers={props.filterOffers}
               />
               <ListOfOffers
-                offers={props.offersForActiveCity}
+                offers={props.offers}
                 onListItemHover={onListItemHover}
               />
             </section>
@@ -96,7 +72,7 @@ function MainPage(props: ConnectedComponentProps): JSX.Element {
                 }}
               >
                 <Map
-                  offers={props.offersForActiveCity}
+                  offers={props.offers}
                   currentOffer={selectedOffer}
                 />
               </section>

@@ -1,8 +1,11 @@
-import {Offers} from '../types/offers';
-import {Cities, SortingOptions} from '../const';
+import { Offers } from '../types/offers';
+import { Cities, SortingOptions, AuthorizationStatus} from '../const';
 
 export type State = {
   activeCity: Cities,
-  offersForActiveCity: Offers,
+  offers: Offers,
+  favoriteOffers: Offers,
   sortOption: SortingOptions,
+  authorizationStatus: AuthorizationStatus,
+  isDataLoaded: boolean,
 };

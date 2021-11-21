@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import leaflet from 'leaflet';
+import { useEffect, useState, MutableRefObject } from 'react';
+import leaflet, { Map, TileLayer } from 'leaflet';
 import {City} from '../../types/offers';
 import { URL_COPYRIGHT_MAP, URL_TYPE_MAP } from '../../const';
 
+/*
 type MapState = {
-  map: leaflet.Map;
+  map: Map;
   markers: leaflet.LayerGroup;
 }
+*/
+function useMap(mapRef: MutableRefObject<HTMLElement | null>, city: City | null): (Map | null) {
 
-function useMap(mapRef: React.MutableRefObject<null>, city: City | null): (MapState | null) {
-
-  const [map, setMapObject] = useState<MapState | null>(null);
-
+  const [map, setMap] = useState<Map | null>(null);
   useEffect(() => {
+    let instance: Map;
     if (mapRef.current !== null && map === null && city !== null) {
-      const instance = leaflet.map(mapRef.current, {
+      instance = new Map(mapRef.current, {
         center: {
           lat: city.location.latitude,
           lng: city.location.longitude,
@@ -29,9 +30,16 @@ function useMap(mapRef: React.MutableRefObject<null>, city: City | null): (MapSt
         },
       ).addTo(instance);
 
-      const markers = new leaflet.LayerGroup().addTo(instance);
+      const layer = new TileLayer(
+        URL_TYPE_MAP,
+        {
+          attribution: URL_COPYRIGHT_MAP,
+        },
+      );
 
-      setMapObject({map: instance, markers: markers});
+      instance.addLayer(layer);
+
+      setMap(instance);
     }
   }, [mapRef, map, city]);
 
